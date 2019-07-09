@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
 import "./App.css";
 import Login from './component/Login';
+import Admin from './component/Admin';
 import Button from './component/Button';
 import logo from './logo.svg';
 // import About from './component/About';
@@ -31,8 +32,11 @@ class App extends Component{
             </div>
           </nav>
 
-          <Switch><Route exact path="/login" component={Login} /></Switch>
-          <Switch><Route exact path="/button" component={Button} /></Switch>
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/admin" component={Admin} />
+            <Route exact path="/button" component={Button} />
+          </Switch>
 
         </Router>
       )

@@ -32,14 +32,19 @@ export default class Login extends Component {
 	}
 	onSubmit(e){
 		e.preventDefault();
-		console.log(this.state.password);
 		const credentails={
 			username:this.state.username,
 			password:this.state.password
 		}
-		axios.post('http://localhost:3000/login',credentails)
-		.then( res=>{ console.log(res); })
-		.catch( err=>{ console.log(err); })
+		axios.post('http://localhost:8050/login',credentails)
+		.then( res=>{ 
+			if(res.status==200){
+				this.props.history.push('/admin');
+			} 
+		})
+		.catch( err=>{
+			this.props.history.push('/login');
+		})
 
 	}
   render() {
@@ -49,7 +54,7 @@ export default class Login extends Component {
       	<div className="row">
 		  <form style={header} onSubmit={this.onSubmit}>
 		    
-		        <input type="text" name="username" placeholder="Username" value={this.state.username}  onChange={this.onChangeUsername}/>
+		        <input type="email" name="username" placeholder="Username" value={this.state.username}  onChange={this.onChangeUsername}/>
 		        <input type="password" name="password" placeholder="Password" value={this.state.password} required onChange={this.onChangePwd}/>
 		        <input type="submit" value="Login"/>
 		      
