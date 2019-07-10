@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Alert } from 'reactstrap';
 import "./Login.css";
 
 const header={
-backgroundColor:"white"
+backgroundColor:"white",
+textAlign:'center'
 };
 
 export default class Login extends Component {
@@ -15,7 +17,8 @@ export default class Login extends Component {
 		this.onSubmit=this.onSubmit.bind(this);
 		this.state={
 			username:"",
-			password:''
+			password:'',
+			alert:false
 		}
 	}
 
@@ -40,7 +43,10 @@ export default class Login extends Component {
 		.then( res=>{ 
 			if(res.status==200){
 				this.props.history.push('/admin');
-			} 
+			}else{
+				this.setState({ alert: true });
+				this.props.history.push('/login');
+			}
 		})
 		.catch( err=>{
 			this.props.history.push('/login');
@@ -49,18 +55,25 @@ export default class Login extends Component {
 	}
   render() {
     return (
-      <div className="container">
-      	<h2> Login </h2>
+      <div className="container" style={header}>
       	<div className="row">
-		  <form style={header} onSubmit={this.onSubmit}>
-		    
-		        <input type="email" name="username" placeholder="Username" value={this.state.username}  onChange={this.onChangeUsername}/>
-		        <input type="password" name="password" placeholder="Password" value={this.state.password} required onChange={this.onChangePwd}/>
-		        <input type="submit" value="Login"/>
-		      
-		  </form>
+      		<div className="col-md-4">
+      			<h2> Login </h2>
+      			<Alert color="info" isOpen={this.state.alert} toggle={this.onDismiss}>
+        I am an alert and I can be dismissed!
+      </Alert>
+			  	<form style={header} onSubmit={this.onSubmit}>
+			    	<div class="form-group">
+					   <input type="email" name="username" placeholder="Username" value={this.state.username}  onChange={this.onChangeUsername}/>
+					</div>
+					<div class="form-group">
+						<input type="password" name="password" placeholder="Password" value={this.state.password} required onChange={this.onChangePwd}/>
+					</div>
+			        <input type="submit" value="Login"/>
+			  	</form>
+			</div>
 		</div>
-		</div>
+	  </div>
     );
   }
 }

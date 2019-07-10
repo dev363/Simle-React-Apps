@@ -27,13 +27,14 @@ app.get('/', function(req,res){
 });
 // Admin Login post data
 app.post('/login', function(req, res) {
-  console.log(req.body)
   user={email:req.body.username,password:req.body.password}
   users.login(user,function(err,result){
     if(err) res.status(404).json({message:"Not found"});
-    res.json(result);
+    if(result)
+      res.send({user:result});
+    else
+      res.status(404).send({user:[],message:"No User data"});
   });
-    res.json({data:"hello"});
 });
 
 // Logout Admin

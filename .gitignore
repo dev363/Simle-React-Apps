@@ -35,6 +35,7 @@ build/Release
 # Dependency directories
 node_modules/
 simple-curd-api/node_modules/
+simple-curd-api/uploads/
 jspm_packages/
 
 # TypeScript v1 declaration files

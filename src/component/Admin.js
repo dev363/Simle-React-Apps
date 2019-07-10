@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
 import "./Login.css";
+import Login from './Login';
+import Button from './Button';
 
-const header={
-backgroundColor:"white"
-};
-
-export default class Login extends Component {
+export default class Admin extends Component {
 
 	constructor(props){
 		super(props);
@@ -14,10 +12,23 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="container">
-      	<h2> Admin </h2>
+      <Router>
+           <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div className="navbar-nav">
+                <Link to={'/admin'} className="nav-item nav-link btn">Admin</Link>
+                <Link to={'/add-new'} className="nav-item nav-link btn">Add New</Link>
+                <Link to={'/show-all'} className="nav-item nav-link btn">All Products</Link>
+              </div>
+            </div>
+          </nav>
 
-	   </div>
+          <Switch>
+            <Route exact path="/add-new" component={Login} />
+            <Route exact path="/show-all" component={Button} />
+          </Switch>
+
+        </Router>
     );
   }
 }
