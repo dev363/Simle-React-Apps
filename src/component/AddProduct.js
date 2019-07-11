@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
 // import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
 // import Axios from 'axios'
 
+//https://www.npmjs.com/package/react-toastify#demo
 
 export default class AddProduct extends Component{
 
@@ -17,7 +19,8 @@ export default class AddProduct extends Component{
 			title:"Hello",
 			sku:"1111",
 			price:"3333",
-			image:""
+			image:"",
+			time:""
 		}
 	}
 
@@ -34,36 +37,32 @@ export default class AddProduct extends Component{
 	onSubmit(e) {
 		
 		e.preventDefault();
-		// let file = this.uploadInput.files[0];
-		const data = new FormData();
+		var data = new FormData();
         data.append('title2',"oijojojojjjoo");
         data.append('title',this.state.title);
         data.append('sku',this.state.sku);
         data.append('price',this.state.price);
         data.append('image',this.uploadInput.files[0]);
-	    
-        // let product={
-        // 	title:this.state.title,
-        // 	sku:this.state.sku,
-        // 	price:this.state.price,
-        // 	image:file,
-        // }
+        data.append('time',Date.now());
+        
         fetch('http://localhost:8050/add-product',
 			{
 				method: 'POST',
 				// headers: { 'Content-Type': 'multipart/form-data' },
-				body: data
+				body:data
 			}
 		).then(res=>{
-        	console.log("yesss")
+			toast.success("Product added successfully", {
+		        position: toast.POSITION.TOP_RIGHT
+		    });
         }).catch(err=>{
-        	console.log("err")
+        	toast.error("Product added successfully", {
+		        position: toast.POSITION.TOP_RIGHT
+		    });
         })
        
 	}
-
 	
-
 	render(){
 		return(
 		  <div className="container">

@@ -3,6 +3,7 @@
 const express = require('express');  
 var ObjectId = require('mongodb').ObjectID;
 const path = require('path');
+const fileUpload = require('express-fileupload');
 var cors = require('cors')
 
 var multer = require('multer');
@@ -19,6 +20,7 @@ var bodyParser=require('body-parser');
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload({uriDecodeFileNames:true}));
 app.use(express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', function(req,res){
@@ -54,81 +56,49 @@ app.get('/get-all-product',
 
 });
 
-// Add new product
+// Add/Update product
 app.post('/add-product', function(req, res) {
-   debugger;
-   console.log(req.body);
-    res.send(req.body);
-    // res.render('add-product');
-});
+  let product=req.body;
 
-// Edit product page
-app.get('/edit-product/:id',
-  function(req, res) {
-    products.getProducts({_id:ObjectId(req.params.id)},function(err,result){
-      // console.log(result);
-      res.render('edit-product',{product:result[0]});
+  if(req.files){
+    const imageFile = req.files.image;
+    imageFile.mv(`./uploads/${req.body.time}.jpg`, function(err) {
+      if (err) {
+        res.status(404).send({message:"image not upload"});
+      }
     });
-});
+    product.image=`${req.body.time}.jpg`;
+  }
 
-// Add-edit post data
-app.post('/add-product2',upload.single('image'), function (req, res, next) {
-    var data=req.body;
-    if(data.title){
-      if(req.file){
-        data.image=req.file.filename;
+  if(req.body._id){
+
+    let id={_id:ObjectId(req.body._id)};
+    delete product._id;
+
+    products.updateOne(id,product, function(err, result) {
+      if (err) { 
+        req.flash('error', 'Product not update.') ;
       }
-      if(req.body._id){
+    });
 
-        let id={_id:ObjectId(req.body._id)};
-        delete data._id;
-
-        products.updateOne(id,data, function(err, result) {
-          if (err) { 
-            req.flash('error', 'Product not update.') ;
-          }
-          data=null;
-          res.redirect('/');
-        });
-
+  }else{
+    products.insertOne(product, function(err, result) {
+      if (err) { 
+        res.status(404).send({message:'Product not added.'}) ;
       }else{
-        products.insertOne(data, function(err, result) {
-          if (err) { 
-            req.flash('error', 'Product not added.') ;
-          }else{
-            req.flash('success', 'Product added successfully.');
-          }
-          data=null;
-          res.redirect('add-product');
-        });
+        res.status(200).send({message:'Product added successfully.'});
       }
-
-    }else{
-      data=null;
-       req.flash('warning', 'All fields required.');
-       res.render('add-product');
-    }
-    
+    });
+  }
 });
 
 // delte product 
 app.get('/del-product/:id',
-  // require('connect-ensure-login').ensureLoggedIn(),
   function(req, res) {
     products.deleteOne({_id:ObjectId(req.params.id)},function(err,result){
       res.redirect('/');
     });
 });
-
-
-
-app.get('/add-to-cart',
-  function(req, res) {
-    console.log(req.session);
-    console.log(req.session.email);
-
-});
-
 
 db.connectToServer( function( err ) {
   const server = app.listen(port, function() {  

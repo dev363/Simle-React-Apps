@@ -31,14 +31,20 @@ export default class AllProducts extends Component{
 			<div className="container">
         		<div className="col-xs-4">
 			        <h1>Products Table</h1>
-		           	<table className="table-bordered" style={{width:'100%'}}>
+		           	<table className="table table-hover" style={{width:'100%'}}>
+		           		<thead className="thead-dark">
 			           	<tr>
+				           	<th>Sr. No</th>
+				           	<th>Image</th>
 				           	<th>Title</th>
 				           	<th>Price</th>
 				           	<th>Action</th>
 				        </tr>
-			        	{this.state.products.map((user) => (
+				        </thead>
+			        	{this.state.products.map((user,index) => (
 			          	<tr>
+				           	<td>{index+1}</td>
+				           	<td><img src={user.image}/></td>
 				           	<td>{user.title}</td>
 				           	<td>{user.price}</td>
 				           	<td>
