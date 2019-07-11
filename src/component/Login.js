@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert } from 'reactstrap';
+
 import "./Login.css";
 
 const header={
-backgroundColor:"white",
+// backgroundColor:"white",
 textAlign:'center'
 };
 
@@ -16,8 +16,8 @@ export default class Login extends Component {
 		this.onChangePwd=this.onChangePwd.bind(this);
 		this.onSubmit=this.onSubmit.bind(this);
 		this.state={
-			username:"",
-			password:'',
+			username:"admin3@gmail.com",
+			password:'admin',
 			alert:false
 		}
 	}
@@ -41,7 +41,7 @@ export default class Login extends Component {
 		}
 		axios.post('http://localhost:8050/login',credentails)
 		.then( res=>{ 
-			if(res.status==200){
+			if(res.status===200){
 				this.props.history.push('/admin');
 			}else{
 				this.setState({ alert: true });
@@ -59,15 +59,12 @@ export default class Login extends Component {
       	<div className="row">
       		<div className="col-md-4">
       			<h2> Login </h2>
-      			<Alert color="info" isOpen={this.state.alert} toggle={this.onDismiss}>
-        I am an alert and I can be dismissed!
-      </Alert>
 			  	<form style={header} onSubmit={this.onSubmit}>
-			    	<div class="form-group">
-					   <input type="email" name="username" placeholder="Username" value={this.state.username}  onChange={this.onChangeUsername}/>
+			    	<div className="form-group">
+					   <input type="email" name="username" className="form-control" placeholder="Username" value={this.state.username}  onChange={this.onChangeUsername}/>
 					</div>
-					<div class="form-group">
-						<input type="password" name="password" placeholder="Password" value={this.state.password} required onChange={this.onChangePwd}/>
+					<div className="form-group">
+						<input type="password" name="password" className="form-control" placeholder="Password" value={this.state.password} required onChange={this.onChangePwd}/>
 					</div>
 			        <input type="submit" value="Login"/>
 			  	</form>

@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
-import "./Login.css";
-import Login from './Login';
-import Button from './Button';
+// import AddProduct from './AddProduct';
+import AddProduct from './AddProduct';
+import AllProducts from './AllProducts';
 
 export default class Admin extends Component {
-
-	constructor(props){
-		super(props);
-	}
 
   render() {
     return (
@@ -24,8 +20,8 @@ export default class Admin extends Component {
           </nav>
 
           <Switch>
-            <Route exact path="/add-new" component={Login} />
-            <Route exact path="/show-all" component={Button} />
+            <Route exact path="/add-new" component={AddProduct} />
+            <Route exact path="/show-all" component={AllProducts} />
           </Switch>
 
         </Router>

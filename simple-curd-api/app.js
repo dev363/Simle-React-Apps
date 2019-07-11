@@ -7,8 +7,8 @@ var cors = require('cors')
 
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
-var db = require( './db' );
 
+var db = require( './db' );
 const users = require('./user');
 const products = require('./products');
 
@@ -44,10 +44,22 @@ app.get('/logout',
     res.redirect('/');
 });
 
-// Add new product page
-app.get('/add-product',
+// Get All Products details
+app.get('/get-all-product',
   function(req, res) {
-    res.render('add-product');
+    products.getProducts(null,function(err,result){
+      if(err) res.status(404).send({message:"No data"});
+      res.send({products:result});
+  });
+
+});
+
+// Add new product
+app.post('/add-product', function(req, res) {
+   debugger;
+   console.log(req.body);
+    res.send(req.body);
+    // res.render('add-product');
 });
 
 // Edit product page
@@ -60,7 +72,7 @@ app.get('/edit-product/:id',
 });
 
 // Add-edit post data
-app.post('/add-product',upload.single('image'), function (req, res, next) {
+app.post('/add-product2',upload.single('image'), function (req, res, next) {
     var data=req.body;
     if(data.title){
       if(req.file){
@@ -108,16 +120,7 @@ app.get('/del-product/:id',
     });
 });
 
-app.get('/frontend',
-  function(req, res) {
-    products.getProducts(null,function(err,result){
-      req.session.email="hgglkm";
-    console.log(req.session);
-    console.log(req.session.email);
-    res.render('frontend',{products:result});
-  });
 
-});
 
 app.get('/add-to-cart',
   function(req, res) {
