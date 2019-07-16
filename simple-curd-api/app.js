@@ -96,7 +96,8 @@ app.post('/add-product', function(req, res) {
 app.get('/del-product/:id',
   function(req, res) {
     products.deleteOne({_id:ObjectId(req.params.id)},function(err,result){
-      res.redirect('/');
+      if(err) res.send({message:"Product not deleted."});
+      res.send({message:"Product deleted successfully."})
     });
 });
 
